@@ -9,16 +9,44 @@ def run_complaint():
     print(complain[number_complaint])
 
 def build_database():
+    """
+    To be completed: Want to create a new panda database, specifying the rows the user wants and the values they would like to input 
+    """
     col_string = input('An example input: first_col, second_col, third_col, fourth_col\nSpecify the columns you would like to see: ')
     col_names = col_string.split(',')
-    row_string = input('Example Data input: first_col_data, second_col_data, third_col_data, fourth_col_data\nInput data: ')
+    row_string = input('Example Data input: first_col_data, second_col_data, None, fourth_col_data\nIf there is no data to be inputted, please put \'None\'\nInput data: ')
     data = row_string.split(',')
+    data_dict = {}
+    for i in range(len(col_names)):
+        data_dict[col_names[i]] = data[i]
+    print(data_dict)
+
+def add_new_row():
+    """
+    to be completed: I want to itterate over the col_names that the user specified in the begining and assign them to the correct values in the dictionary.
+    """
+    des = input("Description: ")
+    basemod = input("Base Moditication: ")
+    mod_opt = input("Mod Options: ")
+    price = input("Price: ")
+    hp = input("HP: ")
+    rarity = input("Rarity: ")
+    book = input("Book/Link: ")
+
+    data_dict = {'Name':name, 'Description':des, 'Base Modification':basemod, 'Mod Options':mod_opt,'Price':price, 'HP' : hp, 'Rarity': rarity, 'Book/Link': book}
+    # mod_values = mod_values.append(data_dict, ignore_index=True)
+
+    return data_dict
 
 
 if __name__ == "__main__":    
     # Set it up so they can either creat a document or edit an alread existing one
     num = 0
+
+    """
     while(1):
+        # give the user the choice to make a document or edit a document
+        # keep them here if they don't input a correct value
         val = input("Would you like to create or edit a document?[c/e]")
         option = val.lower()
         if num > 1:
@@ -34,18 +62,14 @@ if __name__ == "__main__":
             break
         print(val + " is not a valid response. Please enter a valid response.")
         num+=1
-
+    """
     
     # for testing
     file_name = 'modification.csv'
 
     mod_values = pd.read_csv(file_name)
 
-    # print(mod_values.head())
-    # print(mod_values['Name'].tolist())
-    # selected_mod = mod_values.loc[mod_values['Name'] == 'Droid Brain Defense System']
-    # selected_mod.empty == true if empty false if not
-    # print(selected_mod.empty)
+    print(mod_values.head())
 
     while(True):
         answer = input("Would you like to continue[y/n]?")
@@ -54,18 +78,10 @@ if __name__ == "__main__":
             mod_values.to_csv('modification.csv')
             break
         
-        name = input("Name: ")
+        name = input("Name: ").strip()
         selected_mod = mod_values.loc[mod_values['Name'] == name]
         if selected_mod.empty:
-            des = input("Description: ")
-            basemod = input("Base Moditication: ")
-            mod_opt = input("Mod Options: ")
-            price = input("Price: ")
-            hp = input("HP: ")
-            rarity = input("Rarity: ")
-            book = input("Book: ")
-
-            data_dict = {'Name':name, 'Description':des, 'Base Modification':basemod, 'Mod Options':mod_opt,'Price':price, 'HP' : hp, 'Rarity': rarity, 'Book': book}
+            data_dict = add_new_row()
             mod_values = mod_values.append(data_dict, ignore_index=True)
             print("_________________________________________________")
             print(mod_values)
@@ -75,8 +91,12 @@ if __name__ == "__main__":
             update = input("_______________________________________________\nWould you like to upgrade the specs [y/n]?")
             if update.lower() == 'y' or update.lower() == 'yes':
                 # //update the thing
-                print("Cool")
-                mod_values.drop(name, axis=0)
+                index_num = selected_mod.keys().tolist()[0]
+                print(selected_mod[index_num])
+
+                mod_values.drop(selected_mod[index_num],axis=0, inplace=True)
+                data_dict = add_new_row()
+                mod_values = mod_values.append(data_dict, ignore_index=True)
 
     # name = 'Droid Brain Defense System'
     # des = 'Using a droid brain chip and installing a set of sensors on the armour, the wearer is alerted to incoming fire in some fashion. More advanced versions include mini repulsor generators that push the wearer out of harm\'s way.'
