@@ -98,6 +98,7 @@ if __name__ == "__main__":
                 data_dict = add_new_row()
                 mod_values = mod_values.append(data_dict, ignore_index=True)
 
+
     # name = 'Droid Brain Defense System'
     # des = 'Using a droid brain chip and installing a set of sensors on the armour, the wearer is alerted to incoming fire in some fashion. More advanced versions include mini repulsor generators that push the wearer out of harm\'s way.'
     # basemod = 'Defense +1.'
